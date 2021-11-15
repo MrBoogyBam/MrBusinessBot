@@ -86,6 +86,23 @@ bot.on('messageCreate', async message => {
         message.channel.send(':white_check_mark: Your todo list has been updated.');
         return;
     }
+
+    if(message.content.toLowerCase() == `${prefix}todo clear`) {
+        todoArr = await keyv.get('todo-list'+message.author.id);
+
+        if(todoArr == undefined || todoArr.length == 0) {
+            todoArr = [];
+
+            await keyv.set('todo-list'+message.author.id, todoArr);
+
+            message.channel.send(':x: Your todo list is already empty.');
+            return;
+        }
+
+        todoArr = [];
+
+        await keyv.set('todo-list'+message.author.id, todoArr);
+    }
 });
 
 bot.login(token);
